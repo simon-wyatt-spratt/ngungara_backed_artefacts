@@ -16,3 +16,8 @@ Repository Author: Simon Wyatt-Spratt
 Contained within this repository are the R code, the landmark data as *.tps file, and the data for the stone artefacts as three *.csv file. Figures produced for the article are also attached.
 
 For anymore information on the paper, code, or resources please contact Amy Mosig Way at: [amy.way@sydney.edu.au](mailto:amy.way@sydney.edu.au)
+
+# Licenses
+Text and figures : CC-BY-4.0
+
+Data : CC-0 attribution requested in reuse
