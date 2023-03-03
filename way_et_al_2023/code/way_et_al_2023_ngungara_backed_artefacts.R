@@ -11,7 +11,7 @@
 
 # SCRIPT CONTACT: amy.way@sydney.edu.au
 
-# LAST EDITED: 01/03/2023 
+# LAST EDITED: 03/03/2023 
 
 # ABSTRACT
 # The identification of standardised tools in the archaeological record is one
@@ -106,13 +106,22 @@ fw.links <- matrix(
 
 # Momocs link data
 BA_Ldk <- Ldk(coo = ngungara_BA_landmarks$coo,fac = ngungara_BA_data, 
-              links= fw.links, slidings = semi.LMs ) # remove slidings = semi-landmarks for fixed landmarks
+              links= fw.links, 
+              slidings = semi.LMs ) # remove slidings = semi-landmarks for fixed landmarks
 
 # perform GPA with sliding landmarks
 gpa_93_slid <- fgsProcrustes(BA_Ldk)
 
 # perform PCA
 pca_93_slid <- PCA(gpa_93_slid)
+
+# make data frame of PCs to export
+PC_data <- pca_93_slid %>% as_df(6)
+
+# then write the dataframe into a *.csv file
+write.csv(PC_data,"data/PC_data.csv", row.names = FALSE)
+
+ngungara_PC_data <- read.csv("data/PC_data.csv", header = TRUE)
 
 # FIGURE 2.
 # Plot of locally produced backed and other artefacts with imported backed 
@@ -290,21 +299,19 @@ layer_grid(figure_4b, col = "#999999", lty = 3, grid = 2)
 dev.off()
 
 # FIGURE 5.
-# Boxplot of elongation of backed artefacts by mode of import in each Activity 
+# Boxplot of backed artefacts by PC1 and mode of import in each Activity 
 # Area. CR-BA = locally produced backed artefact, Imported BA = imported backed
-# artefact. Geometric microliths have an elongation index lower than 2, and 
-# points have an elongation index greater than 2. Figure produced with the 
-# ggplot package.
+# artefact. Figure produced with the ggplot package.
 
-figure_5 <- ggplot(ngungara_BA_data, 
-                   aes(x = activity_area, 
-                       y = elongation, 
-                       color = mode_of_entry)) +
+figure_5 <- ggplot(ngungara_PC_data,
+                           aes(x = activity_area,
+                               y = PC1,
+                               color = mode_of_entry)) +
   geom_boxplot(aes(color = mode_of_entry)) +
   ggbeeswarm::geom_quasirandom(width = 0.3, varwidth = TRUE, alpha = 0.2) +
   theme_minimal() +
   scale_fill_viridis(discrete = TRUE) +
-  labs(x = "Activity Area", y = "Elongation (length/width)", colour = "Mode of Entry")
+  labs(x = "Activity Area", y = "PC1", colour = "Mode of Entry")
 
 figure_5
 
@@ -317,7 +324,7 @@ ggsave2("results/Way_et_al_2023_Figure_5.png",
         dpi = 300)
 
 # FIGURE 6.
-# 6a. PCA plot of raw material, 6b. scatterplot of elongation by spit, 
+# 6a. PCA plot of raw material, 6b. scatterplot of PC1 by spit, 
 # coloured by raw material. Figure produced with the Momocs package.
 
 # Figure 6a. PCA plot of raw material.
@@ -356,15 +363,16 @@ layer_morphospace_PCA(figure_6a,
 
 dev.off()
 
-# Figure 6b. Scatterplot of elongation by spit
+# Figure 6b. Scatterplot of PC! by spit
 
-figure_6b <-ggplot(ngungara_BA_data, aes(x = elongation, y = spit, 
+figure_6b <-ggplot(ngungara_PC_data, aes(x = PC1, y = spit, 
                                      group = raw_material)) + 
   geom_point(aes(color = raw_material, size = 4, alpha = 0.9)) +
+  scale_y_reverse() +
   scale_colour_viridis_d() +
   stat_ellipse(type = "norm", linetype = 2, level = 0.8) +
   theme_minimal() +
-  labs(x = "Elongation (length/width)", y = "Spit", color = "Raw Material") +
+  labs(x = "PC1", y = "Spit", color = "Raw Material") +
   guides(size = "none", shape = "none", alpha = "none", 
          color = guide_legend(override.aes = list(size = 4)))
 
