@@ -25,3 +25,5 @@ For anymore information on the paper, code, or resources please contact Amy Mosi
 Text and figures : CC-BY-4.0
 
 Data : CC-0 attribution requested in reuse
+
+<a href="https://zenodo.org/doi/10.5281/zenodo.7787713"><img src="https://zenodo.org/badge/438424726.svg" alt="DOI"></a>
